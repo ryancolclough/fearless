@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import { confirm, shop } from '../../data/shop';
+---
+
+<Base
+  title="Christmas Gift Cards | Fearless Tattoos Ottawa"
+  description="Christmas gift card template for Fearless Tattoos in Ottawa. Offer details are not confirmed yet."
+  path="/promotions/christmas-gift-cards/"
+>
+  <header class="page-hero wrap">
+    <p class="eyebrow">Gift cards</p>
+    <h1>Gift cards for a tattoo shop in Ottawa.</h1>
+    <p class="lede">Evergreen campaign page. The current site does not list a gift card offer, so nothing is for sale here yet.</p>
+  </header>
+  <section class="section">
+    <div class="wrap panel prose">
+      <h2>The offer</h2>
+      <p class="confirm">{confirm.giftCard}</p>
+      <p>Until that is filled in, call or text the shop at <a href={`tel:${shop.phoneTel}`}>{shop.phoneDisplay}</a>.</p>
+    </div>
+  </section>
+</Base>

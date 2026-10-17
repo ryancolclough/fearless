@@ -1,0 +1,25 @@
+---
+import { shopHours, walkInHours } from '../data/shop';
+
+const groups = [
+  { title: 'Shop hours', rows: shopHours },
+  { title: 'Walk-in hours', rows: walkInHours },
+];
+---
+
+<div class="hours-tables">
+  {groups.map((group) => (
+    <div>
+      <h3>{group.title}</h3>
+      <div class="hours-grid">
+        {group.rows.map((row) => (
+          <div>
+            <strong>{row.day}</strong>
+            {row.time.startsWith('[CONFIRM') ? <p class="confirm">{row.time}</p> : <span>{row.time}</span>}
+            {row.note && <p class="confirm">{row.note}</p>}
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>

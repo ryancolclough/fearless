@@ -1,0 +1,7 @@
+# GitHub Pages only reads robots.txt from the host root
+# (https://ryancolclough.github.io/robots.txt), which this project repo
+# cannot set. This file is served at /fearless/robots.txt.
+# V2 pages also send a noindex meta tag, which is what keeps the preview
+# out of search results. V1 is not disallowed.
+User-agent: *
+Disallow: /fearless/v2/

@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import { portrait } from '../data/shop';
+import type { Artist } from '../data/shop';
+import { bookHref, href } from '../lib/url';
+
+interface Props {
+  artist: Artist;
+}
+const { artist } = Astro.props;
+const confirmedRate = artist.rateLabel.startsWith('[CONFIRM');
+---
+
+<article class="artist-card reveal tilt">
+  <a class="portrait-link" href={href(`/${artist.slug}/`)}>
+    <Image
+      src={portrait(artist.id)}
+      alt={artist.portraitAlt}
+      widths={[480, 800]}
+      sizes="(min-width: 1040px) 22vw, (min-width: 700px) 46vw, 100vw"
+      loading="lazy"
+      format="webp"
+      quality={70}
+    />
+  </a>
+  <div class="artist-body">
+    <h3>{artist.name}{artist.aka ? ` (${artist.aka})` : ''}</h3>
+    <p class="role">{artist.role}</p>
+    {artist.roleNote && <p class="confirm">{artist.roleNote}</p>}
+    {confirmedRate ? <p class="confirm">{artist.rateShort}</p> : <p class="rate">{artist.rateLabel}</p>}
+    {artist.bookable ? (
+      <a class="btn primary full" data-track href={bookHref(`/${artist.slug}/`)}>Book with {artist.name}</a>
+    ) : (
+      <>
+        <p class="coming">Coming soon</p>
+        <a class="btn ghost full" href={href(`/${artist.slug}/`)}>View work</a>
+      </>
+    )}
+  </div>
+</article>
