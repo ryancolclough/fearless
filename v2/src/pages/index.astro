@@ -2,13 +2,13 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import ArtistCard from '../components/ArtistCard.astro';
+import HoursTables from '../components/HoursTables.astro';
 import {
   artists,
   bookingSteps,
   confirm,
   featuredImage,
   featuredWork,
-  hours,
   reviews,
   shop,
 } from '../data/shop';
@@ -32,12 +32,11 @@ const ann = artists.find((artist) => artist.id === 'ann');
     <div class="ring" aria-hidden="true"></div>
     <div class="ring inner" aria-hidden="true"></div>
     <div class="hero-content">
-      <p class="eyebrow">Custom tattoo studio in Ottawa</p>
       <h1>
         <span class="h1-display">Fearless<br />by design.</span>
         <span class="h1-key">Custom tattoo shop in Ottawa.</span>
       </h1>
-      <p class="hero-copy">Custom tattoos, clean execution, strong artists, and a booking process built around the piece you actually want.</p>
+      <p class="hero-copy">Clean execution, strong artists, and a booking path built around the piece you actually want.</p>
       <div class="hero-actions">
         <a class="btn primary" href={bookHref('/book/')} data-open-picker>Book / Get a quote</a>
         <a class="btn ghost" href="#work">View portfolio</a>
@@ -122,20 +121,12 @@ const ann = artists.find((artist) => artist.id === 'ann');
     </div>
   </section>
 
-  <section class="section" id="walk-ins">
+  <section class="section" id="hours">
     <div class="wrap panel">
       <p class="eyebrow">Walk-in tattoo Ottawa</p>
-      <h2>Walk-ins {shop.walkInWindow}.</h2>
-      <p>Accepting walk-ins between 12pm and 5pm. Minimum {shop.walkInMinimum}. {shop.callAhead}</p>
-      <div class="hours-grid">
-        {hours.map((row) => (
-          <div>
-            <strong>{row.day}</strong>
-            {row.time.startsWith('[CONFIRM') ? <p class="confirm">{row.time}</p> : <span>{row.time}</span>}
-          </div>
-        ))}
-      </div>
-      <p class="confirm">{confirm.appointments}</p>
+      <h2>Shop hours and walk-in hours.</h2>
+      <p>Walk-in minimum {shop.walkInMinimum}.</p>
+      <HoursTables />
     </div>
   </section>
 

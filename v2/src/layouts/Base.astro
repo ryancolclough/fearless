@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { previewNoIndex, previewOrigin, productionOrigin, siteName } from '../config';
+import { previewNoIndex, productionOrigin, siteName } from '../config';
 import { bookHref, href } from '../lib/url';
 import { bookableArtists, confirm, portrait, shop } from '../data/shop';
 import { parlorJsonLd } from '../lib/schema';
@@ -13,18 +13,20 @@ interface Props {
   ogTitle?: string;
   ogDescription?: string;
   jsonLd?: unknown;
+  /** Artist pages pass "#book" so the sticky Book button jumps to that calendar. */
+  stickyBookHref?: string;
 }
 
-const { title, description, path, ogTitle = title, ogDescription = description, jsonLd } = Astro.props;
+const { title, description, path, ogTitle = title, ogDescription = description, jsonLd, stickyBookHref } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const canonical = new URL(path, productionOrigin).href;
-const ogImage = new URL(`${base}og/fearless-share.jpg`, previewOrigin).href;
+const ogImage = new URL('/og/fearless-share.jpg', productionOrigin).href;
 const robots = previewNoIndex ? 'noindex, nofollow' : 'index, follow';
 const schemas = [parlorJsonLd(ogImage), jsonLd].flat().filter(Boolean);
 const nav = [
   ['Team', '/team/'],
   ['Rates', '/#rates'],
-  ['Walk-ins', '/#walk-ins'],
+  ['Walk-ins', '/#hours'],
   ['Reviews', '/#reviews'],
   ['Aftercare', '/aftercare/'],
   ['Contact', '/contact/'],
@@ -124,7 +126,6 @@ const current = (itemPath: string) => itemPath === path;
           <a href={href('/policies/')}>Policies</a>
           <a href={href('/faq/')}>FAQ</a>
           <a href={href('/contact/')}>Contact</a>
-          <a href={href('/promotions/christmas-gift-cards/')}>Gift cards</a>
         </nav>
         <div class="footer-links">
           <a href={shop.instagram} rel="noopener noreferrer">Instagram {shop.instagramHandle}</a>
@@ -137,7 +138,11 @@ const current = (itemPath: string) => itemPath === path;
     <div class="sticky-bar">
       <p class="sticky-note">Walk-ins 12–5 · {shop.walkInMinimum} minimum</p>
       <div class="sticky-actions">
-        <a class="btn primary" href={bookHref('/book/')} data-open-picker>Book<span class="sr-only"> / Get a quote</span></a>
+        {stickyBookHref ? (
+          <a class="btn primary" href={stickyBookHref}>Book<span class="sr-only"> this artist</span></a>
+        ) : (
+          <a class="btn primary" href={bookHref('/book/')} data-open-picker>Book<span class="sr-only"> / Get a quote</span></a>
+        )}
         <a class="btn ghost" href={`tel:${shop.phoneTel}`}>Call</a>
         <a class="btn ghost" href={`sms:${shop.phoneTel}`}>Text</a>
       </div>

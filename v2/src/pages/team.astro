@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import ArtistCard from '../components/ArtistCard.astro';
-import { artists, confirm, hours, shop } from '../data/shop';
+import HoursTables from '../components/HoursTables.astro';
+import { artists } from '../data/shop';
 ---
 
 <Base
@@ -21,17 +22,8 @@ import { artists, confirm, hours, shop } from '../data/shop';
   </section>
   <section class="section">
     <div class="wrap panel">
-      <h2>Walk-in hours</h2>
-      <p>{shop.callAhead}</p>
-      <div class="hours-grid">
-        {hours.map((row) => (
-          <div>
-            <strong>{row.day}</strong>
-            {row.time.startsWith('[CONFIRM') ? <p class="confirm">{row.time}</p> : <span>{row.time}</span>}
-          </div>
-        ))}
-      </div>
-      <p class="confirm">{confirm.appointments}</p>
+      <h2>Hours</h2>
+      <HoursTables />
     </div>
   </section>
 </Base>

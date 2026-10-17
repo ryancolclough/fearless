@@ -11,11 +11,10 @@ export const confirm = {
   postal: '[CONFIRM: postal code]',
   sunday:
     '[CONFIRM: Sunday hours — the homepage lists 12–5pm as OPTIONAL, and the team page lists Sunday as CLOSED]',
-  appointments:
-    '[CONFIRM: appointment hours outside the walk-in times published on the current site]',
+  weekdayClose:
+    '[CONFIRM: weekday closing time — the hours table lists weekdays 12–5pm, and the site also says to call ahead from 5–7pm]',
   lineup: '[CONFIRM: artist lineup and rates are still current]',
-  emilliaRate:
-    '[CONFIRM: Emillia\'s rate — the live site lists "$100", the June mockup says "$100 min.", and the booking notes say "$100/h"]',
+  legal: '[CONFIRM: Terms and privacy copied from the current site, reviewed by Ryan?]',
   annRole: '[CONFIRM: Ann\'s role — the live site says apprenticeship]',
   deposit:
     '[CONFIRM: deposit amount, and whether it comes off the final price. The current site only says deposits are based on the length of the session]',
@@ -124,8 +123,8 @@ export const artists: Artist[] = [
     id: 'emillia',
     name: 'Emillia',
     role: 'Junior Artist',
-    rateLabel: confirm.emilliaRate,
-    rateShort: '[CONFIRM: rate]',
+    rateLabel: '$100/h',
+    rateShort: '$100/h',
     bookable: true,
     slug: 'emilliabookings',
     widget: 'https://link.aureliusgrow.com/widget/group/GEWumYuNrV5Ot4uzhd5n',
@@ -166,10 +165,22 @@ export const shop = {
   instagramHandle: '@fearlesstattoosottawa',
 };
 
-export const hours = [
-  { day: 'Weekdays', time: '12pm–5pm walk-ins' },
+export interface HourRow {
+  day: string;
+  time: string;
+  note?: string;
+}
+
+export const shopHours: HourRow[] = [
+  { day: 'Weekdays', time: 'Opens 12pm', note: confirm.weekdayClose },
   { day: 'Saturday', time: '12pm–7pm' },
   { day: 'Sunday', time: confirm.sunday },
+];
+
+export const walkInHours: HourRow[] = [
+  { day: 'Walk-ins', time: '12pm–5pm' },
+  { day: 'Minimum', time: '$100 + tax' },
+  { day: 'Call ahead', time: '5pm–7pm on weekdays and Saturdays' },
 ];
 
 export const reviews = [
@@ -349,7 +360,14 @@ export const policies = {
   ],
 };
 
-export const faqs = [
+export interface Faq {
+  question: string;
+  answer: string;
+  link?: string;
+  linkLabel?: string;
+}
+
+export const faqs: Faq[] = [
   {
     question: 'How do I book a tattoo in Ottawa at Fearless?',
     answer:
@@ -357,8 +375,9 @@ export const faqs = [
   },
   {
     question: 'Do you take walk-ins?',
-    answer:
-      'Yes. Walk-ins are accepted between 12pm and 5pm. The walk-in minimum is $100 plus tax. For walk-ins between 5pm and 7pm on weekdays and Saturdays, call ahead. The hours table lists weekdays 12pm–5pm and Saturday 12pm–7pm.',
+    answer: 'Yes. The walk-in minimum is $100 plus tax. Shop hours and walk-in hours are in the hours table.',
+    link: '/#hours',
+    linkLabel: 'See the hours table',
   },
   {
     question: 'What are the Sunday hours?',

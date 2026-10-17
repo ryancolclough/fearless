@@ -7,7 +7,11 @@ export default defineConfig({
   site: 'https://ryancolclough.github.io',
   base: '/fearless/v2',
   trailingSlash: 'always',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/promotions/christmas-gift-cards'),
+    }),
+  ],
   build: {
     format: 'directory',
     assets: 'assets',

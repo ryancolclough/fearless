@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import Gallery from '../components/Gallery.astro';
 import { Image } from 'astro:assets';
 import { artists, confirm, gallery, portrait } from '../data/shop';
-import { bookHref } from '../lib/url';
 
 export function getStaticPaths() {
   return artists.map((artist) => ({
@@ -39,41 +38,43 @@ const widgetSrc = artist.widget
   : '';
 ---
 
-<Base title={title} description={description} path={`/${artist.slug}/`}>
-  <header class="page-hero wrap">
+<Base
+  title={title}
+  description={description}
+  path={`/${artist.slug}/`}
+  stickyBookHref={artist.widget ? '#book' : undefined}
+>
+  <header class="page-hero artist-intro wrap">
     <p class="eyebrow">{artist.role}{artist.aka ? ` · ${artist.aka}` : ''}</p>
     <h1>{artist.name} at Fearless Tattoos, a tattoo shop in Ottawa.</h1>
     {artist.roleNote && <p class="confirm">{artist.roleNote}</p>}
+    {artist.bookable ? (
+      <p class="artist-book"><a class="btn primary" href="#book">Book with {artist.name}</a></p>
+    ) : (
+      <p class="coming">Coming soon — currently not accepting appointments.</p>
+    )}
   </header>
 
-  <section class="section">
-    <div class="wrap" style="display:grid;gap:18px">
-      <div class="artist-grid">
-        <article class="artist-card">
-          <div class="portrait-link">
-            <Image
-              src={portrait(artist.id)}
-              alt={artist.portraitAlt}
-              widths={[480, 800]}
-              sizes="(min-width: 800px) 360px, 100vw"
-              format="webp"
-              quality={72}
-            />
-          </div>
-        </article>
-        <div class="panel">
-          <h2>About</h2>
-          <p class="confirm">{artist.bio}</p>
-          <h2>Styles</h2>
-          <p class="confirm">{artist.styles}</p>
-          <h2>Rate</h2>
-          {artist.rateLabel.startsWith('[CONFIRM') ? <p class="confirm">{artist.rateLabel}</p> : <p class="rate">{artist.rateLabel}</p>}
-          {artist.bookable ? (
-            <p style="margin-top:16px"><a class="btn primary" href="#book">Book with {artist.name}</a></p>
-          ) : (
-            <p class="coming">Coming soon — currently not accepting appointments.</p>
-          )}
-        </div>
+  <section class="section artist-lead">
+    <div class="wrap artist-layout">
+      <div class="artist-portrait">
+        <Image
+          src={portrait(artist.id)}
+          alt={artist.portraitAlt}
+          widths={[480, 800]}
+          sizes="(min-width: 800px) 280px, 100vw"
+          format="webp"
+          quality={72}
+          loading="eager"
+        />
+      </div>
+      <div class="panel">
+        <h2>About</h2>
+        <p class="confirm">{artist.bio}</p>
+        <h2>Styles</h2>
+        <p class="confirm">{artist.styles}</p>
+        <h2>Rate</h2>
+        {artist.rateLabel.startsWith('[CONFIRM') ? <p class="confirm">{artist.rateLabel}</p> : <p class="rate">{artist.rateLabel}</p>}
       </div>
     </div>
   </section>

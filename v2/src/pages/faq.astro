@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { faqs } from '../data/shop';
 import { faqJsonLd } from '../lib/schema';
+import { href } from '../lib/url';
 ---
 
 <Base
@@ -20,6 +21,7 @@ import { faqJsonLd } from '../lib/schema';
         <section>
           <h2>{item.question}</h2>
           {item.answer.includes('[CONFIRM') ? <p class="confirm">{item.answer}</p> : <p>{item.answer}</p>}
+          {item.link && <p><a href={href(item.link)}>{item.linkLabel}</a></p>}
         </section>
       ))}
     </div>

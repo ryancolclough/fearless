@@ -2,12 +2,6 @@ import { artists, confirm, shop } from '../data/shop';
 import { productionOrigin } from '../config';
 
 export function parlorJsonLd(imageUrl: string) {
-  const weekday = {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-    opens: '12:00',
-    closes: '17:00',
-  };
   const saturday = {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: 'Saturday',
@@ -33,8 +27,9 @@ export function parlorJsonLd(imageUrl: string) {
       addressCountry: 'CA',
     },
     areaServed: shop.area,
-    openingHoursSpecification: [weekday, saturday],
+    openingHoursSpecification: [saturday],
     additionalProperty: [
+      { '@type': 'PropertyValue', name: 'Weekday closing time', value: confirm.weekdayClose },
       { '@type': 'PropertyValue', name: 'Sunday hours', value: confirm.sunday },
       { '@type': 'PropertyValue', name: 'Walk-in minimum', value: shop.walkInMinimum },
     ],
