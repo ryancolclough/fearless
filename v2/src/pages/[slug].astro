@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import Gallery from '../components/Gallery.astro';
+import { Image } from 'astro:assets';
+import { artists, confirm, gallery, portrait } from '../data/shop';
+import { bookHref } from '../lib/url';
+
+export function getStaticPaths() {
+  return artists.map((artist) => ({
+    params: { slug: artist.slug },
+    props: { id: artist.id },
+  }));
+}
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+const artist = artists.find((item) => item.id === id);
+if (!artist) throw new Error(`Unknown artist ${id}`);
+
+const photos = gallery(artist.id);
+const photoAlts = photos.map((_, index) =>
+  artist.id === 'ann'
+    ? `Artwork photo ${index + 1} from Ann’s page at Fearless Tattoos in Ottawa`
+    : `Portfolio photo ${index + 1} from ${artist.name}’s page at Fearless Tattoos in Ottawa`,
+);
+const studio = artist.id === 'coco' ? gallery('studio') : [];
+const studioAlts = studio.map((_, index) => `Portfolio photo ${index + 1} shown on Coco’s current booking page at Fearless Tattoos`);
+
+const rateSentence = artist.rateLabel.startsWith('[CONFIRM') ? 'Rate to confirm.' : artist.rateLabel;
+const title = `${artist.name}, ${artist.role} | Fearless Tattoos Ottawa`;
+const description = artist.bookable
+  ? `See ${artist.name}’s tattoo portfolio and book a session at Fearless Tattoos in Bells Corners, Ottawa. ${rateSentence}`
+  : `See ${artist.name}’s portfolio at Fearless Tattoos in Bells Corners, Ottawa. Not accepting appointments.`;
+
+const widgetSrc = artist.widget
+  ? `${artist.widget}?utm_source=website&utm_medium=onsite&utm_campaign=evergreen`
+  : '';
+---
+
+<Base title={title} description={description} path={`/${artist.slug}/`}>
+  <header class="page-hero wrap">
+    <p class="eyebrow">{artist.role}{artist.aka ? ` · ${artist.aka}` : ''}</p>
+    <h1>{artist.name} at Fearless Tattoos, a tattoo shop in Ottawa.</h1>
+    {artist.roleNote && <p class="confirm">{artist.roleNote}</p>}
+  </header>
+
+  <section class="section">
+    <div class="wrap" style="display:grid;gap:18px">
+      <div class="artist-grid">
+        <article class="artist-card">
+          <div class="portrait-link">
+            <Image
+              src={portrait(artist.id)}
+              alt={artist.portraitAlt}
+              widths={[480, 800]}
+              sizes="(min-width: 800px) 360px, 100vw"
+              format="webp"
+              quality={72}
+            />
+          </div>
+        </article>
+        <div class="panel">
+          <h2>About</h2>
+          <p class="confirm">{artist.bio}</p>
+          <h2>Styles</h2>
+          <p class="confirm">{artist.styles}</p>
+          <h2>Rate</h2>
+          {artist.rateLabel.startsWith('[CONFIRM') ? <p class="confirm">{artist.rateLabel}</p> : <p class="rate">{artist.rateLabel}</p>}
+          {artist.bookable ? (
+            <p style="margin-top:16px"><a class="btn primary" href="#book">Book with {artist.name}</a></p>
+          ) : (
+            <p class="coming">Coming soon — currently not accepting appointments.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="gallery">
+    <div class="wrap">
+      <h2>Portfolio</h2>
+      <Gallery images={photos} alts={photoAlts} />
+      {studio.length > 0 && (
+        <>
+          <h2>Also on Coco’s current page</h2>
+          <p class="confirm">{confirm.cocoPhotos}</p>
+          <Gallery images={studio} alts={studioAlts} />
+        </>
+      )}
+    </div>
+  </section>
+
+  {artist.widget && (
+    <section class="section" id="book">
+      <div class="wrap">
+        <h2>Book with {artist.name}</h2>
+        <p>The calendar below is the same booking widget used on the current site.</p>
+        <div class="widget-wrap">
+          <iframe
+            data-widget={artist.widget}
+            src={widgetSrc}
+            title={`Book with ${artist.name} at Fearless Tattoos`}
+            loading="eager"
+          ></iframe>
+        </div>
+        <script is:inline src="https://link.aureliusgrow.com/js/form_embed.js"></script>
+      </div>
+    </section>
+  )}
+</Base>

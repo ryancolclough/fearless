@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import PickerList from '../components/PickerList.astro';
+import { bookingSteps, confirm, shop } from '../data/shop';
+---
+
+<Base
+  title="Book a Tattoo | Fearless Tattoos Ottawa"
+  description="Pick your artist, send your idea and lock in your date. Fearless Tattoos, Bells Corners, Ottawa."
+  path="/book/"
+>
+  <header class="page-hero wrap">
+    <p class="eyebrow">Book / Get a quote</p>
+    <h1>Book a tattoo at our Ottawa shop.</h1>
+    <p class="lede">This is the page to use in the Instagram bio, Google profile, missed-call text, and the counter QR code.</p>
+  </header>
+  <section class="section">
+    <div class="wrap panel">
+      <h2>Pick your artist</h2>
+      <PickerList />
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <h2>How booking works</h2>
+      <div class="steps">
+        {bookingSteps.map((step, index) => (
+          <article class="step">
+            <p class="eyebrow">0{index + 1}</p>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </article>
+        ))}
+      </div>
+      <p class="confirm">{confirm.deposit}</p>
+      <p class="confirm">{confirm.cancellation}</p>
+      <p class="confirm">{confirm.age}</p>
+      <p>Or call or text <a href={`tel:${shop.phoneTel}`}>{shop.phoneDisplay}</a>.</p>
+    </div>
+  </section>
+</Base>

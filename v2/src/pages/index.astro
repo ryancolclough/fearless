@@ -1,0 +1,192 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ArtistCard from '../components/ArtistCard.astro';
+import {
+  artists,
+  bookingSteps,
+  confirm,
+  featuredImage,
+  featuredWork,
+  hours,
+  reviews,
+  shop,
+} from '../data/shop';
+import { bookHref, href } from '../lib/url';
+
+const bookable = artists.filter((artist) => artist.bookable);
+const ann = artists.find((artist) => artist.id === 'ann');
+---
+
+<Base
+  title="Fearless Tattoos | Custom Tattoo Studio in Ottawa (Bells Corners)"
+  description="Custom tattoos by Coco, Surya, Tristan and Emillia in Bells Corners, Ottawa. Walk-ins from 12 to 5pm, $100 minimum. Book online or call 613-900-5996."
+  path="/"
+  ogTitle="Fearless Tattoos, Ottawa"
+  ogDescription="Custom tattoos in Bells Corners. Walk-ins 12 to 5pm. Book online."
+>
+  <section class="hero">
+    <div class="hero-crest" aria-hidden="true"></div>
+    <div class="orb" aria-hidden="true"></div>
+    <div class="orb two" aria-hidden="true"></div>
+    <div class="ring" aria-hidden="true"></div>
+    <div class="ring inner" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="eyebrow">Custom tattoo studio in Ottawa</p>
+      <h1>
+        <span class="h1-display">Fearless<br />by design.</span>
+        <span class="h1-key">Custom tattoo shop in Ottawa.</span>
+      </h1>
+      <p class="hero-copy">Custom tattoos, clean execution, strong artists, and a booking process built around the piece you actually want.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href={bookHref('/book/')} data-open-picker>Book / Get a quote</a>
+        <a class="btn ghost" href="#work">View portfolio</a>
+      </div>
+      <p class="trust-row">Walk-ins {shop.walkInWindow} · {shop.walkInMinimum} minimum · <a href={`tel:${shop.phoneTel}`}>{shop.phoneDisplay}</a></p>
+    </div>
+    <aside class="glass-card reveal">
+      <p class="eyebrow">Booking made simple</p>
+      <strong>Choose artist. Send idea. Secure slot.</strong>
+      <p>Deposits are based on the length of the session.</p>
+    </aside>
+  </section>
+
+  <section class="strip" aria-label="Shop facts">
+    <div><strong>{shop.walkInMinimum}</strong><span>Walk-in minimum</span></div>
+    <div><strong>{shop.averageHourly}</strong><span>Average hourly rate, artist dependent</span></div>
+    <div><a href={`tel:${shop.phoneTel}`}>{shop.phoneDisplay}</a><span>Call or text</span></div>
+    <div><strong>Ottawa</strong><span>Bells Corners area</span></div>
+  </section>
+
+  <section class="section" id="team">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The artists</p>
+        <h2>Meet the artists.</h2>
+      </div>
+      <div class="artist-grid">
+        {bookable.map((artist) => <ArtistCard artist={artist} />)}
+      </div>
+      {ann && (
+        <p class="confirm" style="margin-top:16px">
+          Ann is listed on the current site as an apprentice and is not accepting appointments.
+          {' '}{ann.roleNote} <a href={href('/annbookings/')}>View Ann’s page</a>.
+        </p>
+      )}
+      <p style="margin-top:16px"><a href={href('/team/')}>All artists</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Portfolio</p>
+        <h2>Work from the studio.</h2>
+      </div>
+      <div class="work-grid">
+        {featuredWork.map((item) => (
+          <a href={href(item.path)}>
+            <Image
+              src={featuredImage(item)}
+              alt={item.alt}
+              widths={[480, 900]}
+              sizes="(min-width: 1040px) 24vw, 50vw"
+              loading="lazy"
+              format="webp"
+              quality={68}
+            />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="rates">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Rates</p>
+        <h2>Straightforward pricing.</h2>
+        <p class="confirm">{confirm.lineup}</p>
+      </div>
+      <div class="rate-grid">
+        <article class="rate-card"><span>Walk-in minimum</span><strong>{shop.walkInMinimum}</strong><small>{shop.walkInWindow}</small></article>
+        <article class="rate-card"><span>Average rate</span><strong>{shop.averageHourly}</strong><small>{shop.averageNote}</small></article>
+        {bookable.map((artist) => (
+          <article class="rate-card">
+            <span>{artist.name}{artist.aka ? ` (${artist.aka})` : ''}</span>
+            {artist.rateLabel.startsWith('[CONFIRM') ? <p class="confirm">{artist.rateLabel}</p> : <strong>{artist.rateLabel}</strong>}
+            <small>{artist.role}</small>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="walk-ins">
+    <div class="wrap panel">
+      <p class="eyebrow">Walk-in tattoo Ottawa</p>
+      <h2>Walk-ins {shop.walkInWindow}.</h2>
+      <p>Accepting walk-ins between 12pm and 5pm. Minimum {shop.walkInMinimum}. {shop.callAhead}</p>
+      <div class="hours-grid">
+        {hours.map((row) => (
+          <div>
+            <strong>{row.day}</strong>
+            {row.time.startsWith('[CONFIRM') ? <p class="confirm">{row.time}</p> : <span>{row.time}</span>}
+          </div>
+        ))}
+      </div>
+      <p class="confirm">{confirm.appointments}</p>
+    </div>
+  </section>
+
+  <section class="section" id="reviews">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Reviews</p>
+        <h2>What our clients say.</h2>
+      </div>
+      <div class="review-grid">
+        {reviews.map((review) => (
+          <article class="review-card reveal">
+            <p>“{review.text}”</p>
+            <footer>{review.name}</footer>
+          </article>
+        ))}
+      </div>
+      <p class="confirm">{confirm.googleReview}</p>
+      <p class="confirm">{confirm.googleMaps}</p>
+    </div>
+  </section>
+
+  <section class="section" id="booking">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How booking works</p>
+        <h2>Pick your artist, send us your idea, and we’ll get you a quote.</h2>
+      </div>
+      <div class="steps">
+        {bookingSteps.map((step, index) => (
+          <article class="step">
+            <p class="eyebrow">0{index + 1}</p>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </article>
+        ))}
+      </div>
+      <p class="confirm">{confirm.deposit}</p>
+      <p class="confirm">{confirm.reschedule}</p>
+      <p class="confirm">{confirm.age}</p>
+      <p style="margin-top:18px"><a class="btn primary" href={bookHref('/book/')} data-open-picker>Book / Get a quote</a></p>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div>
+      <p class="eyebrow">Ready when you are</p>
+      <h2>Book a tattoo in Ottawa.</h2>
+      <p>Walk-ins {shop.walkInWindow}, {shop.walkInMinimum} minimum. Call or text {shop.phoneDisplay}.</p>
+      <p class="confirm">{confirm.street}</p>
+    </div>
+    <a class="btn primary" href={bookHref('/book/')} data-open-picker>Book / Get a quote</a>
+  </section>
+</Base>

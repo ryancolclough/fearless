@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import { aftercare, confirm, shop } from '../data/shop';
+---
+
+<Base
+  title="Tattoo Aftercare | Fearless Tattoos Ottawa"
+  description="Aftercare from Fearless Tattoos in Ottawa: second skin, traditional bandage, and dry healing. Always follow your artist."
+  path="/aftercare/"
+>
+  <header class="page-hero wrap">
+    <p class="eyebrow">Aftercare</p>
+    <h1>Tattoo aftercare from our Ottawa shop.</h1>
+    <p class="lede">{aftercare.intro}</p>
+    <p class="confirm">{confirm.aftercare}</p>
+  </header>
+  <article class="section">
+    <div class="wrap prose">
+      {aftercare.methods.map((method) => (
+        <section>
+          <h2>{method.title}</h2>
+          {method.bestFor && <p><strong>Best for:</strong> {method.bestFor}</p>}
+          <ol>
+            {method.steps.map((step) => <li>{step}</li>)}
+          </ol>
+          <p><strong>Pros:</strong> {method.pros}</p>
+          <p><strong>Cons:</strong> {method.cons}</p>
+        </section>
+      ))}
+      <h2>General rules for all methods</h2>
+      <ul>
+        {aftercare.rules.map((rule) => <li>{rule}</li>)}
+      </ul>
+      <p>Questions about healing: call or text <a href={`tel:${shop.phoneTel}`}>{shop.phoneDisplay}</a>.</p>
+    </div>
+  </article>
+</Base>

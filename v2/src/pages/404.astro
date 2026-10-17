@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/url';
+---
+
+<Base
+  title="Page not found | Fearless Tattoos"
+  description="This page is not on the Fearless Tattoos preview."
+  path="/404/"
+>
+  <header class="page-hero wrap">
+    <p class="eyebrow">404</p>
+    <h1>Page not found at this Ottawa tattoo shop.</h1>
+    <p class="lede">That address is not part of this preview.</p>
+    <p><a class="btn primary" href={href('/')}>Back to the homepage</a></p>
+  </header>
+</Base>

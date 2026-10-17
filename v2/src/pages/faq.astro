@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { faqs } from '../data/shop';
+import { faqJsonLd } from '../lib/schema';
+---
+
+<Base
+  title="Tattoo Booking FAQ | Fearless Tattoos Ottawa"
+  description="Booking questions for Fearless Tattoos in Ottawa: deposits, walk-ins, age and ID, and cancellations."
+  path="/faq/"
+  jsonLd={faqJsonLd(faqs)}
+>
+  <header class="page-hero wrap">
+    <p class="eyebrow">FAQ</p>
+    <h1>Booking questions for our Ottawa tattoo shop.</h1>
+  </header>
+  <section class="section">
+    <div class="wrap prose">
+      {faqs.map((item) => (
+        <section>
+          <h2>{item.question}</h2>
+          {item.answer.includes('[CONFIRM') ? <p class="confirm">{item.answer}</p> : <p>{item.answer}</p>}
+        </section>
+      ))}
+    </div>
+  </section>
+</Base>

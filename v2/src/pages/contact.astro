@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import { confirm, hours, shop } from '../data/shop';
+import { bookHref } from '../lib/url';
+---
+
+<Base
+  title="Contact a Tattoo Shop in Ottawa | Fearless Tattoos"
+  description="Call or text Fearless Tattoos in Bells Corners, Ottawa at 613-900-5996. Walk-ins 12 to 5. Street address to be confirmed."
+  path="/contact/"
+>
+  <header class="page-hero wrap">
+    <p class="eyebrow">Contact</p>
+    <h1>Visit the tattoo shop in Ottawa.</h1>
+    <p class="lede">{shop.area}. Call or text, or book with an artist online.</p>
+  </header>
+  <section class="section">
+    <div class="wrap" style="display:grid;gap:16px">
+      <div class="panel">
+        <h2>Phone and email</h2>
+        <p><a href={`tel:${shop.phoneTel}`}>Call {shop.phoneDisplay}</a></p>
+        <p><a href={`sms:${shop.phoneTel}`}>Text {shop.phoneDisplay}</a></p>
+        <p><a href={`mailto:${shop.email}`}>{shop.email}</a></p>
+        <p><a href={shop.instagram} rel="noopener noreferrer">Instagram {shop.instagramHandle}</a></p>
+        <p><a href={shop.facebook} rel="noopener noreferrer">Facebook</a></p>
+        <p><a class="btn primary" href={bookHref('/book/')} data-open-picker>Book / Get a quote</a></p>
+      </div>
+      <div class="panel">
+        <h2>Hours</h2>
+        <p>Walk-ins {shop.walkInWindow}. Minimum {shop.walkInMinimum}. {shop.callAhead}</p>
+        <div class="hours-grid">
+          {hours.map((row) => (
+            <div>
+              <strong>{row.day}</strong>
+              {row.time.startsWith('[CONFIRM') ? <p class="confirm">{row.time}</p> : <span>{row.time}</span>}
+            </div>
+          ))}
+        </div>
+        <p class="confirm">{confirm.appointments}</p>
+      </div>
+      <div>
+        <h2>Map</h2>
+        <div class="map-placeholder">
+          <p>{shop.area}</p>
+          <p class="confirm">{confirm.street}</p>
+          <p class="confirm">{confirm.postal}</p>
+          <p class="confirm">{confirm.googleMaps}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

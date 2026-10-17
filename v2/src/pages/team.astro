@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import ArtistCard from '../components/ArtistCard.astro';
+import { artists, confirm, hours, shop } from '../data/shop';
+---
+
+<Base
+  title="Tattoo Artists in Ottawa | Fearless Tattoos"
+  description="Meet Coco, Surya, Tristan, Emillia and Ann at Fearless Tattoos, a custom tattoo shop in Bells Corners, Ottawa."
+  path="/team/"
+>
+  <header class="page-hero wrap">
+    <p class="eyebrow">Team</p>
+    <h1>Tattoo artists at Fearless Tattoos in Ottawa.</h1>
+    <p class="lede">The current team page lists walk-in hours. Bios are not published yet.</p>
+  </header>
+  <section class="section">
+    <div class="wrap artist-grid">
+      {artists.map((artist) => <ArtistCard artist={artist} />)}
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap panel">
+      <h2>Walk-in hours</h2>
+      <p>{shop.callAhead}</p>
+      <div class="hours-grid">
+        {hours.map((row) => (
+          <div>
+            <strong>{row.day}</strong>
+            {row.time.startsWith('[CONFIRM') ? <p class="confirm">{row.time}</p> : <span>{row.time}</span>}
+          </div>
+        ))}
+      </div>
+      <p class="confirm">{confirm.appointments}</p>
+    </div>
+  </section>
+</Base>

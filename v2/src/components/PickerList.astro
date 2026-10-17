@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import { bookableArtists, confirm, portrait, shop } from '../data/shop';
+import { bookHref } from '../lib/url';
+---
+
+<p>Walk-ins {shop.walkInWindow}, {shop.walkInMinimum} minimum.</p>
+<ul class="picker-list">
+  {bookableArtists.map((artist) => (
+    <li>
+      <a data-track href={bookHref(`/${artist.slug}/`)}>
+        <Image src={portrait(artist.id)} alt="" width={112} height={112} widths={[112]} format="webp" quality={60} />
+        <span>
+          <strong>{artist.name}</strong>
+          <small>{artist.role} · {artist.rateShort}</small>
+        </span>
+      </a>
+    </li>
+  ))}
+  <li>
+    <a data-track href={bookHref('/cocobookings/', 'prefer=any')}>
+      <span class="any-mark" aria-hidden="true">?</span>
+      <span>
+        <strong>Any artist / not sure</strong>
+        <small>Opens Coco’s calendar for now</small>
+      </span>
+    </a>
+  </li>
+</ul>
+<p class="confirm">{confirm.anyArtist}</p>

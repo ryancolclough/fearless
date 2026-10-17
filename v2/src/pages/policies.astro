@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import { confirm, policies, shop } from '../data/shop';
+---
+
+<Base
+  title="Studio Policies | Fearless Tattoos Ottawa"
+  description="Terms of service and privacy policy for Fearless Tattoos, a tattoo shop in Ottawa."
+  path="/policies/"
+>
+  <header class="page-hero wrap">
+    <p class="eyebrow">Policies</p>
+    <h1>Studio policies for our Ottawa tattoo shop.</h1>
+    <p class="lede">Copied from the current policies page. A few items are still open.</p>
+    <p class="confirm">{confirm.deposit}</p>
+    <p class="confirm">{confirm.cancellation}</p>
+    <p class="confirm">{confirm.reschedule}</p>
+    <p class="confirm">{confirm.age}</p>
+    <p class="confirm">{confirm.consentForm}</p>
+  </header>
+  <article class="section">
+    <div class="wrap prose">
+      <h2>Terms of service</h2>
+      <p>{policies.termsIntro}</p>
+      {policies.terms.map((item) => (
+        <section>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </section>
+      ))}
+      <h2>Privacy policy</h2>
+      <p>{policies.privacyIntro}</p>
+      {policies.privacy.map((item) => (
+        <section>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </section>
+      ))}
+      <p>Questions: <a href={`mailto:${shop.email}`}>{shop.email}</a> or <a href={`tel:${shop.phoneTel}`}>{shop.phoneDisplay}</a>.</p>
+    </div>
+  </article>
+</Base>
